@@ -67,13 +67,15 @@ CHOptimizedMethod(0, self, NSMutableArray *, PrefsListController, specifiers)
                 [[savedSpecifiers objectForKey:[NSNumber numberWithInteger:group]]addObject:s];
             }
         }
-        if (![[[savedSpecifiers objectForKey:[NSNumber numberWithInteger:6]][1] identifier]isEqualToString:@"DEVELOPER_SETTINGS"]) {
-            CydiaSpecifiers = [savedSpecifiers objectForKey:[NSNumber numberWithInteger:6]];
-        }
-        if (![[[savedSpecifiers objectForKey:[NSNumber numberWithInteger:7]][1] identifier]isEqualToString:@"DEVELOPER_SETTINGS"]) {
-            AppStoreSpecifiers = [savedSpecifiers objectForKey:[NSNumber numberWithInteger:7]];
+        AppStoreSpecifiers = [savedSpecifiers objectForKey:[NSNumber numberWithInteger:group]];
+        if ([[[savedSpecifiers objectForKey:[NSNumber numberWithInteger:group-1]][1] identifier]isEqualToString:@"DEVELOPER_SETTINGS"]) {
+            if (group-2 >= 6) {
+                CydiaSpecifiers = [savedSpecifiers objectForKey:[NSNumber numberWithInteger:group-2]];
+            }
         } else {
-            AppStoreSpecifiers = [savedSpecifiers objectForKey:[NSNumber numberWithInteger:8]];
+            if (group-1 >= 6) {
+                CydiaSpecifiers = [savedSpecifiers objectForKey:[NSNumber numberWithInteger:group-1]];
+            }
         }
         
         [specifiers addObject:[PSSpecifier groupSpecifierWithName:nil]];
