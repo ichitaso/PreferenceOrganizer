@@ -33,7 +33,7 @@ static NSMutableArray *AppStoreSpecifiers;
 @implementation CydiaSpecifiersController
 - (NSArray *)specifiers
 {
-    if (_specifiers == nil) { _specifiers =  CydiaSpecifiers; }
+    if (_specifiers == nil) { self.specifiers = CydiaSpecifiers; }
     return _specifiers;
 }
 @end
@@ -43,7 +43,7 @@ static NSMutableArray *AppStoreSpecifiers;
 @implementation AppStoreSpecifiersController
 - (NSArray *)specifiers
 {
-    if (_specifiers == nil) { _specifiers =  AppStoreSpecifiers; }
+    if (_specifiers == nil) { self.specifiers = AppStoreSpecifiers; }
     return _specifiers;
 }
 @end
@@ -61,20 +61,22 @@ CHOptimizedMethod(0, self, NSMutableArray *, PrefsListController, specifiers)
                 group++;
                 if (group >= 6) {
                     [savedSpecifiers setObject:[NSMutableArray array]forKey:[NSNumber numberWithInteger:group]];
+                } else {
+                    continue;
                 }
             }
             if (group >= 6) {
                 [[savedSpecifiers objectForKey:[NSNumber numberWithInteger:group]]addObject:s];
             }
         }
-        AppStoreSpecifiers = [savedSpecifiers objectForKey:[NSNumber numberWithInteger:group]];
+        AppStoreSpecifiers = [[savedSpecifiers objectForKey:[NSNumber numberWithInteger:group]]retain];
         if ([[[savedSpecifiers objectForKey:[NSNumber numberWithInteger:group-1]][1] identifier]isEqualToString:@"DEVELOPER_SETTINGS"]) {
             if (group-2 >= 6) {
-                CydiaSpecifiers = [savedSpecifiers objectForKey:[NSNumber numberWithInteger:group-2]];
+                CydiaSpecifiers = [[savedSpecifiers objectForKey:[NSNumber numberWithInteger:group-2]]retain];
             }
         } else {
             if (group-1 >= 6) {
-                CydiaSpecifiers = [savedSpecifiers objectForKey:[NSNumber numberWithInteger:group-1]];
+                CydiaSpecifiers = [[savedSpecifiers objectForKey:[NSNumber numberWithInteger:group-1]]retain];
             }
         }
         
@@ -104,11 +106,33 @@ CHOptimizedMethod(0, self, NSMutableArray *, PrefsListController, specifiers)
     });
     return specifiers;
 }
+CHOptimizedMethod(0, self, void, PrefsListController, refresh3rdPartyBundles)
+{
+    CHSuper(0, PrefsListController, refresh3rdPartyBundles);
+    NSMutableArray *savedSpecifiers = [NSMutableArray array];
+    BOOL go = NO;
+    for (PSSpecifier *s in CHIvar(self, _specifiers, NSMutableArray *)) {
+        if (!go && [s.identifier isEqualToString:@"App Store"]) {
+            go = YES;
+            continue;
+        }
+        if (go) {
+            [savedSpecifiers addObject:s];
+        }
+    }
+    for (PSSpecifier *s in savedSpecifiers) {
+        [self removeSpecifier:s];
+    }
+    [savedSpecifiers removeObjectAtIndex:0];
+    [AppStoreSpecifiers release];
+    AppStoreSpecifiers = [savedSpecifiers retain];
+}
 
 CHConstructor
 {
 	@autoreleasepool {
         CHLoadLateClass(PrefsListController);
         CHHook(0, PrefsListController, specifiers);
+        CHHook(0, PrefsListController, refresh3rdPartyBundles);
     }
 }
