@@ -16,7 +16,6 @@
 /* Begin PBXFileReference section */
 		FE51C6C917214D7F00B1D705 /* PreferenceOrganizer.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = PreferenceOrganizer.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE51C6CC17214D7F00B1D705 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		FE51C6D117214D7F00B1D705 /* control.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = control.txt; path = Package/DEBIAN/control.txt; sourceTree = "<group>"; };
 		FE51C6D217214D7F00B1D705 /* control */ = {isa = PBXFileReference; lastKnownFileType = text; name = control; path = Package/DEBIAN/control; sourceTree = "<group>"; };
 		FE51C6D417214D7F00B1D705 /* PackageVersion.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = PackageVersion.plist; sourceTree = "<group>"; };
 		FE51C6D517214D7F00B1D705 /* PreferenceOrganizer-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PreferenceOrganizer-Prefix.pch"; sourceTree = "<group>"; };
@@ -89,7 +88,6 @@
 		FE51C6D017214D7F00B1D705 /* DEBIAN */ = {
 			isa = PBXGroup;
 			children = (
-				FE51C6D117214D7F00B1D705 /* control.txt */,
 				FE51C6D217214D7F00B1D705 /* control */,
 			);
 			name = DEBIAN;
